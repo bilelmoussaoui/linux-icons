@@ -8,7 +8,6 @@ const path = require('path')
 const fs = require('fs')
 const svg2png = require('svg2png')
 
-
 // Home directory
 const HOME = os.homedir()
 // List of possible icons paths
@@ -39,19 +38,18 @@ const Context = {
   STATUS: 'status'
 }
 
-function getIconThemeCMD() {
+function getIconThemeCMD () {
   let desktop = process.env.XDG_CURRENT_DESKTOP
   let key, path
   switch (desktop) {
-    case "GNOME":
-      key = "icon-theme"
-      path = "org.gnome.desktop.interface"
+    case 'GNOME':
+      key = 'icon-theme'
+      path = 'org.gnome.desktop.interface'
   }
   return `gsettings get ${path} ${key}`
 }
 
-
-function getIconThemeName(callback) {
+function getIconThemeName (callback) {
   /*
     Return default icon theme name
     Read the gsettings and get the icon name uses by the user
@@ -324,7 +322,7 @@ module.exports.getIcon = (iconName, size = 22, context = Context.STATUS, callbac
   })
 }
 
-module.exports.getIconBuffer.sync= (iconName, size = 22, context = Context.STATUS) => {
+module.exports.getIconBuffer.sync = (iconName, size = 22, context = Context.STATUS) => {
   return getImageBufferSync(getIconPathSync(iconName, size, context))
 }
 
