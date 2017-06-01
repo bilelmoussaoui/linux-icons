@@ -11,7 +11,7 @@ The current version supports:
 
 - Inherits
 - Sizes (SVG icons are resized when using `getIconBuffer`)
-- Icon Contexts
+- Icon [Contexts](https://standards.freedesktop.org/icon-naming-spec/icon-naming-spec-latest.html#context)
 
 ## How to use
 
