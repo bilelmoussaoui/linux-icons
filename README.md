@@ -28,7 +28,17 @@ In order to get the full path of an icon
 ```javascript
 const icons = require('linux-icons')
 
-let iconPath = icons.getIcon('myicon-name', 22, icons.Context.STATUS)
+let iconPath = icons.getIconSync('myicon-name', 22, icons.Context.STATUS)
+```
+
+Async
+
+```javascript
+const icons = require('linux-icons')
+
+icons.getIcon('myicon-name', 22, icons.Context.STATUS, iconPath => {
+  console.log(iconPath)
+})
 ```
 
 Or to get the buffer of it
@@ -36,7 +46,16 @@ Or to get the buffer of it
 ```javascript
 const icons = require('linux-icons')
 
-let icon = icons.getIconBuffer('myicon-name', 22, icons.Context.STATUS)
+let icon = icons.getIconBufferSync('myicon-name', 22, icons.Context.STATUS)
+```
+
+Async
+```javascript
+const icons = require('linux-icons')
+
+icons.getIconBuffer('myicon-name', 22, icons.Context.STATUS, buffer => {
+  console.log(buffer)
+})
 ```
 
 Note: Electron tray icons does not support SVG icons. You will have to use `getIconBuffer` with `nativeImage.createFromBuffer`. See the examples folder.
@@ -46,6 +65,6 @@ Note: Electron tray icons does not support SVG icons. You will have to use `getI
 
 - [ ] Auto-detect the DE and get the right icon theme name
 - [ ] Make the icon size & the context optional
-- [ ] Async version
+- [x] Async version
 - [ ] Clean the code!
 - [ ] Scaling Factor
