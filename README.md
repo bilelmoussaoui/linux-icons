@@ -1,33 +1,41 @@
 # linux-icons
+
 Use Native Linux icons on NodeJS
 
 
 Improve Linux support on your NodeJS application by using system icon themes. The icons should be placed under one of the freedesktop icons location standards like `/usr/share/icons/hicolor/`
 
+## Status
+
 The current version supports:
+
 - Inherits
 - Sizes (SVG icons are resized when using `getIconBuffer`)
 - Icon Contexts
 
 ## How to use
+
 In order to get the full path of an icon
+
 ```javascript
 const icons = require('linux-icons')
 
-let iconPath = icon.getIcon('myicon-name', 22, icons.Context.STATUS)
+let iconPath = icons.getIcon('myicon-name', 22, icons.Context.STATUS)
 ```
 
 Or to get the buffer of it
+
 ```javascript
 const icons = require('linux-icons')
 
-let icon = icon.getIconBuffer('myicon-name', 22, icons.Context.STATUS)
+let icon = icons.getIconBuffer('myicon-name', 22, icons.Context.STATUS)
 ```
 
 Note: Electron tray icons does not support SVG icons. You will have to use `getIconBuffer` with `nativeImage.createFromBuffer`. See the examples folder.
 
 
-TODO:
+## TODO
+
 - [ ] Auto-detect the DE and get the right icon theme name
 - [ ] Make the icon size & the context optional
 - [ ] Async version
