@@ -324,11 +324,11 @@ module.exports.getIcon = (iconName, size = 22, context = Context.STATUS, callbac
   })
 }
 
-module.exports.getIconBuffer.sync= (iconName, size = 22, context = STATUS_CONTEXT) => {
+module.exports.getIconBuffer.sync= (iconName, size = 22, context = Context.STATUS) => {
   return getImageBufferSync(getIconPathSync(iconName, size, context))
 }
 
-module.exports.getIcon.sync = (iconName, size = 22, context = STATUS_CONTEXT) => {
+module.exports.getIcon.sync = (iconName, size = 22, context = Context.STATUS) => {
   return getIconPathSync(iconName, size, context)
 }
 
