@@ -23,6 +23,7 @@ const ICONS_PATH = [
   path.join(HOME, '.pixmaps/')
 ]
 
+<<<<<<< HEAD
 // Icons contexts freedestkop standards
 const ACTIONS_CONTEXT = 'actions'
 const ANIMATIONS_CONTEXT = 'animations'
@@ -36,6 +37,22 @@ const MIMETYPES_CONTEXT = 'mimetypes'
 const PANEL_CONTEXT = 'panel'
 const PLACES_CONTEXT = 'places'
 const STATUS_CONTEXT = 'status'
+=======
+const Context = {
+  ACTIONS: 'actions',
+  ANIMATIONS: 'animations',
+  APPLICATIONS: 'applications',
+  CATEGORIES: 'categories',
+  DEVICES: 'devices',
+  EMBLEMS: 'emblems',
+  EMOTES: 'emotes',
+  INTERNATIONAL: 'international',
+  MIMETYPES: 'mimetypes',
+  PANEL: 'panel',
+  PLACES: 'places',
+  STATUS: 'status'
+}
+>>>>>>> f7f968f8698ed83205873a414b1ec5b26982bdaa
 
 
 
@@ -317,7 +334,7 @@ function __getIconsPaths (theme, iconName, size, context) {
   return icons
 }
 
-module.exports.getIconBuffer = (iconName, size = 22, context = STATUS_CONTEXT, callback) => {
+module.exports.getIconBuffer = (iconName, size = 22, context = Context.STATUS, callback) => {
   getIconPath(iconName, size, context, (iconPath) => {
     getImageBuffer(iconPath, size, (buffer) => {
       callback(buffer)
@@ -325,7 +342,7 @@ module.exports.getIconBuffer = (iconName, size = 22, context = STATUS_CONTEXT, c
   })
 }
 
-module.exports.getIcon = (iconName, size = 22, context = STATUS_CONTEXT, callback) => {
+module.exports.getIcon = (iconName, size = 22, context = Context.STATUS, callback) => {
   getIconPath(iconName, size, context, (iconPath) => {
     callback(iconPath)
   })
@@ -339,17 +356,4 @@ module.exports.getIcon.sync = (iconName, size = 22, context = STATUS_CONTEXT) =>
   return getIconPathSync(iconName, size, context)
 }
 
-module.exports.Context = {
-  ACTIONS: ACTIONS_CONTEXT,
-  ANIMATIONS: ANIMATIONS_CONTEXT,
-  APPLICATIONS: APPLICATIONS_CONTEXT,
-  CATEGORIES: CATEGORIES_CONTEXT,
-  DEVICES: DEVICES_CONTEXT,
-  EMBLEMS: EMBLEMS_CONTEXT,
-  EMOTES: EMOTES_CONTEXT,
-  INTERNATIONAL: INTERNATIONAL_CONTEXT,
-  MIMETYPES: MIMETYPES_CONTEXT,
-  PANEL: PANEL_CONTEXT,
-  PLACES: PLACES_CONTEXT,
-  STATUS: STATUS_CONTEXT
-}
+module.exports.Context = Context
