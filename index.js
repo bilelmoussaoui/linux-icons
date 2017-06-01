@@ -38,6 +38,12 @@ const Context = {
   STATUS: 'status'
 }
 
+const SUPPORTED_EXTENSIONS = ['.svg', '.png']
+
+function isLinux () {
+  return os.type().toLowerCase() === 'linux'
+}
+
 function getIconThemeCMD () {
   let desktop = process.env.XDG_CURRENT_DESKTOP
   let key, path
@@ -99,8 +105,7 @@ function parseThemeSync (themePath) {
   */
   let index = path.join(themePath, 'index.theme')
   if (fs.existsSync(index)) {
-    let content = readINI.sync(index)
-    return content
+    return readINI.sync(index)
   }
 }
 
@@ -127,17 +132,15 @@ function getThemeSync (themeName) {
   /*
     Looks for a theme name on the standard icon locations
   */
-
-  let theme
   for (let i = 0; i < ICONS_PATH.length; i++) {
     let themePath = path.join(ICONS_PATH[i], themeName)
     if (fs.existsSync(themePath)) {
-      theme = {
-        path: themePath,
-        context: parseThemeSync(themePath)
-      }
-      if (theme != null || undefined) {
-        return theme
+      let context = parseThemeSync(themePath)
+      if (context != null || undefined) {
+        return {
+          path: themePath,
+          context: context
+        }
       }
     }
   }
@@ -214,11 +217,6 @@ function getImageBufferSync (iconPath, size) {
 // Async
 
 function getIconPath (iconName, size, context, callback) {
-  // Throw an err as the plugin should be only used on linux
-  if (os.type().toLowerCase() !== 'linux') {
-    throw Error('getIcon is only supported on linux.')
-  }
-
   // get the default theme object
   getIconThemeName(name => {
     getTheme(name, theme => {
@@ -246,11 +244,6 @@ function getIconPath (iconName, size, context, callback) {
 }
 
 function getIconPathSync (iconName, size, context) {
-  // Throw an err as the plugin should be only used on linux
-  if (os.type().toLowerCase() !== 'linux') {
-    throw Error('getIcon is only supported on linux.')
-  }
-
   // get the default theme object
   let defaultTheme = getThemeSync(getIconThemeNameSync())
   let inherits = defaultTheme.context['Icon Theme']['Inherits'].split(',')
@@ -285,8 +278,6 @@ function __getIconsPaths (theme, iconName, size, context) {
     return element.toLowerCase()
   })
 
-  let supportedExtension = ['svg', 'png']
-
   for (let key in theme.context) {
     if (key !== 'Icon Theme') {
       let $context = theme.context[key]['Context'].toLowerCase()
@@ -298,8 +289,8 @@ function __getIconsPaths (theme, iconName, size, context) {
       if (key.indexOf('@') !== -1) {
         if (context.includes($context) && ($minSize <= size <= $maxSize || $size === size)) {
           let iconDirectory = path.join(theme.path, key)
-          for (let ext in supportedExtension) {
-            icons.push(path.join(iconDirectory, iconName + '.' + supportedExtension[ext]))
+          for (let ext in SUPPORTED_EXTENSIONS) {
+            icons.push(path.join(iconDirectory, iconName + SUPPORTED_EXTENSIONS[ext]))
           }
         }
       }
@@ -309,6 +300,10 @@ function __getIconsPaths (theme, iconName, size, context) {
 }
 
 module.exports.getIconBuffer = (iconName, size = 22, context = Context.STATUS, callback) => {
+  if (!isLinux()) {
+    throw Error('getIconBuffer is only supported on linux.')
+  }
+
   getIconPath(iconName, size, context, (iconPath) => {
     getImageBuffer(iconPath, size, (buffer) => {
       callback(buffer)
@@ -317,16 +312,29 @@ module.exports.getIconBuffer = (iconName, size = 22, context = Context.STATUS, c
 }
 
 module.exports.getIcon = (iconName, size = 22, context = Context.STATUS, callback) => {
+  if (!isLinux()) {
+    throw Error('getIcon is only supported on linux.')
+  }
+
   getIconPath(iconName, size, context, (iconPath) => {
     callback(iconPath)
   })
 }
 
 module.exports.getIconBuffer.sync = (iconName, size = 22, context = Context.STATUS) => {
+  if (!isLinux()) {
+    throw Error('getIconBuffer.sync is only supported on linux.')
+  }
+
   return getImageBufferSync(getIconPathSync(iconName, size, context))
 }
 
 module.exports.getIcon.sync = (iconName, size = 22, context = Context.STATUS) => {
+  if (!isLinux()) {
+    throw Error('getIcon.sync is only supported on linux.')
+
+  }
+
   return getIconPathSync(iconName, size, context)
 }
 
