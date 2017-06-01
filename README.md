@@ -1,5 +1,5 @@
 # linux-icons
-
+[![Build Status](https://travis-ci.org/bil-elmoussaoui/linux-icons.svg?branch=master)](https://travis-ci.org/bil-elmoussaoui/linux-icons)
 Use Native Linux icons on NodeJS
 
 
@@ -14,6 +14,7 @@ The current version supports:
 - Icon Contexts
 
 ## How to use
+
 Install the package
 
 ```bash
