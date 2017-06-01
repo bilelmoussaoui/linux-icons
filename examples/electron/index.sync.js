@@ -8,7 +8,7 @@ const {
 const icons = require('linux-icons')
 
 // Sync Example
-let buffer = icons.getIconBufferSync('google-chrome-tray', 22, [icons.Context.STATUS,
+let buffer = icons.getIconBuffer.sync('google-chrome-tray', 22, [icons.Context.STATUS,
   icons.Context.PANEL
 ])
 let icon = nativeImage.createFromBuffer(buffer)

@@ -1,6 +1,6 @@
 {
   "name": "linux-icons-electron-example",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Linux Icons Electron Example",
   "main": "index.js",
   "scripts": {
