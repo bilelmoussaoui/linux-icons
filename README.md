@@ -63,8 +63,7 @@ Note: Electron tray icons does not support SVG icons. You will have to use `getI
 
 ## TODO
 
-- [ ] Auto-detect the DE and get the right icon theme name
-- [ ] Make the icon size & the context optional
+- [x] Auto-detect the DE and get the right icon theme name
 - [x] Async version
 - [ ] Clean the code!
 - [ ] Scaling Factor

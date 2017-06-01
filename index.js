@@ -23,21 +23,7 @@ const ICONS_PATH = [
   path.join(HOME, '.pixmaps/')
 ]
 
-<<<<<<< HEAD
 // Icons contexts freedestkop standards
-const ACTIONS_CONTEXT = 'actions'
-const ANIMATIONS_CONTEXT = 'animations'
-const APPLICATIONS_CONTEXT = 'applications'
-const CATEGORIES_CONTEXT = 'categories'
-const DEVICES_CONTEXT = 'devices'
-const EMBLEMS_CONTEXT = 'emblems'
-const EMOTES_CONTEXT = 'emotes'
-const INTERNATIONAL_CONTEXT = 'international'
-const MIMETYPES_CONTEXT = 'mimetypes'
-const PANEL_CONTEXT = 'panel'
-const PLACES_CONTEXT = 'places'
-const STATUS_CONTEXT = 'status'
-=======
 const Context = {
   ACTIONS: 'actions',
   ANIMATIONS: 'animations',
@@ -51,16 +37,6 @@ const Context = {
   PANEL: 'panel',
   PLACES: 'places',
   STATUS: 'status'
-}
->>>>>>> f7f968f8698ed83205873a414b1ec5b26982bdaa
-
-
-
-const DESKTOP = {
-  "GNOME": {
-    "key": "icon-theme",
-    "path": "org.gnome.desktop.interface"
-  }
 }
 
 function getIconThemeCMD() {
