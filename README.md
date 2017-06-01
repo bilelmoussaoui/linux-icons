@@ -14,6 +14,11 @@ The current version supports:
 - Icon Contexts
 
 ## How to use
+Install the package
+
+```bash
+npm install --save linux-icons
+```
 
 In order to get the full path of an icon
 
