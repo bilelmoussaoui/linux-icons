@@ -41,10 +41,18 @@ const Context = {
 const SUPPORTED_EXTENSIONS = ['.svg', '.png']
 
 function isLinux () {
+  /**
+   * @desc Checks if the current os is Linux or not
+   * @return bool - success or failure
+   */
   return os.type().toLowerCase() === 'linux'
 }
 
 function getIconThemeCMD () {
+  /**
+   * @desc The exact command to run to get the current icon theme
+   * @return string - the command
+   */
   let desktop = process.env.XDG_CURRENT_DESKTOP
   let key, path
   switch (desktop) {
@@ -56,10 +64,10 @@ function getIconThemeCMD () {
 }
 
 function getIconThemeName (callback) {
-  /*
-    Return default icon theme name
-    Read the gsettings and get the icon name uses by the user
-  */
+  /**
+   * @desc Gets the current icon theme name
+   * @param Promise callback - callback (iconName)
+   */
   exec(getIconThemeCMD(), (error, stdout) => {
     if (error !== null) {
       console.error(error)
@@ -69,10 +77,10 @@ function getIconThemeName (callback) {
 }
 
 function getIconThemeNameSync () {
-  /*
-    Return default icon theme name
-    Read the gsettings and get the icon name uses by the user
-  */
+  /**
+   * @desc Gets the current icon theme name
+   * @return string - The icon theme name
+   */
   try {
     return execSync(getIconThemeCMD()).toString().trim().replace(/'/g, '')
   } catch (err) {
@@ -81,12 +89,12 @@ function getIconThemeNameSync () {
   }
 }
 
-// Async
 function parseTheme (themePath, callback) {
-  /*
-    Read the index.theme and return it's content
-    index.theme file is a simple ini file
-  */
+  /**
+   * @desc Get the information about the theme (stored on index.theme)
+   * @param string themePath - the absolute path to the theme directory
+   * @param Promise callback - callback (index.theme's content)
+   */
   readINI(path.join(themePath, 'index.theme'), (error, data) => {
     if (error !== null) {
       if (error.code === 'ENOENT') {
@@ -99,21 +107,23 @@ function parseTheme (themePath, callback) {
 }
 
 function parseThemeSync (themePath) {
-  /*
-    Read the index.theme and return it's content
-    index.theme file is a simple ini file
-  */
+  /**
+   * @desc Get the information about the theme (stored on index.theme)
+   * @param string themePath - the absolute path to the theme directory
+   * @return object - the content of the index.theme file (ini file)
+   */
   let index = path.join(themePath, 'index.theme')
   if (fs.existsSync(index)) {
     return readINI.sync(index)
   }
 }
 
-// Async
 function getTheme (themeName, callback) {
-  /*
-    Looks for a theme name on the standard icon locations
-  */
+  /**
+   * @desc Looks for a theme on the freedesktop standard icons locations
+   * @param string themeName - The icon theme name
+   * @param Promise callback -  callback (theme object)
+   */
   for (let i = 0; i < ICONS_PATH.length; i++) {
     let themePath = path.join(ICONS_PATH[i], themeName)
     parseTheme(themePath, (data) => {
@@ -129,9 +139,11 @@ function getTheme (themeName, callback) {
 }
 
 function getThemeSync (themeName) {
-  /*
-    Looks for a theme name on the standard icon locations
-  */
+  /**
+   * @desc Looks for a theme on the freedesktop standard icons locations
+   * @param string themeName - The icon theme name
+   * @return object theme - contains the path of the theme & it's content
+   */
   for (let i = 0; i < ICONS_PATH.length; i++) {
     let themePath = path.join(ICONS_PATH[i], themeName)
     if (fs.existsSync(themePath)) {
@@ -147,8 +159,15 @@ function getThemeSync (themeName) {
   return null
 }
 
-// Async
 function getIconFromTheme (theme, iconName, size, context, callback) {
+  /**
+   * @desc Gets the icon path from a theme if the icon found
+   * @param theme theme - Theme object contains path & context attrs
+   * @param string iconName - The icon name to look for
+   * @param int size - the icon size
+   * @param object context - the context of the icon
+   * @param Promise callback - callback(iconPath)
+   */
   let icons = __getIconsPaths(theme, iconName, size, context)
   for (let key in icons) {
     fs.realpath(icons[key], (error, resolvedPath) => {
@@ -163,6 +182,14 @@ function getIconFromTheme (theme, iconName, size, context, callback) {
 }
 
 function getIconFromThemeSync (theme, iconName, size, context) {
+    /**
+   * @desc Gets the icon path from a theme if the icon found
+   * @param theme theme - Theme object contains path & context attrs
+   * @param string iconName - The icon name to look for
+   * @param int size - the icon size
+   * @param object context - the context of the icon
+   * @return string - the real path of the icon if found
+   */
   let icons = __getIconsPaths(theme, iconName, size, context)
   for (let key in icons) {
     let iconPath = icons[key]
@@ -173,8 +200,13 @@ function getIconFromThemeSync (theme, iconName, size, context) {
   return null
 }
 
-// Async
 function getImageBuffer (iconPath, size, callback) {
+  /**
+   * @desc Get the svg/png image buffer
+   * @param string iconPath - the icon path
+   * @param int size - the icon size
+   * @param Promise callback - callback(buffer)
+   */
   if (path.extname(iconPath).toLowerCase() === '.svg') {
     fs.readFile(iconPath, (error, buffer) => {
       if (error !== null) {
@@ -204,6 +236,12 @@ function getImageBuffer (iconPath, size, callback) {
 }
 
 function getImageBufferSync (iconPath, size) {
+    /**
+   * @desc Get the svg/png image buffer
+   * @param string iconPath - the icon path
+   * @param int size - the icon size
+   * @return buffer
+   */
   if (path.extname(iconPath).toLowerCase() === '.svg') {
     return svg2png.sync(fs.readFileSync(iconPath), {
       'width': size,
@@ -214,10 +252,14 @@ function getImageBufferSync (iconPath, size) {
   }
 }
 
-// Async
-
 function getIconPath (iconName, size, context, callback) {
-  // get the default theme object
+  /**
+   * @desc Get the icon's absolute path by looking on the theme's content
+   * @param string iconName - an icon name
+   * @param int size - the icon size
+   * @param Context context - the icon context (see freedesktop specifications)
+   * @param Promise callback - callback(iconPath)
+   */
   getIconThemeName(name => {
     getTheme(name, theme => {
       let inherits = theme.context['Icon Theme']['Inherits'].split(',')
@@ -244,7 +286,13 @@ function getIconPath (iconName, size, context, callback) {
 }
 
 function getIconPathSync (iconName, size, context) {
-  // get the default theme object
+  /**
+   * @desc Get the icon's absolute path by looking on the theme's content
+   * @param string iconName - an icon name
+   * @param int size - the icon size
+   * @param Context context - the icon context (see freedesktop specifications)
+   * @return string - the icon absolute path
+   */
   let defaultTheme = getThemeSync(getIconThemeNameSync())
   let inherits = defaultTheme.context['Icon Theme']['Inherits'].split(',')
 
@@ -270,6 +318,16 @@ function getIconPathSync (iconName, size, context) {
 }
 
 function __getIconsPaths (theme, iconName, size, context) {
+  /**
+   * @desc Reads the theme data,
+   *      & looks for possible icons on the theme's subdirs
+   * @param Theme theme : theme object
+   * @param string iconName: the icon name
+   * @param int size: the icon size
+   * @param Context context: the icon context
+   * @return Array - a list of icons paths
+   */
+
   let icons = []
   if (typeof (context) !== 'object') {
     context = [context]
@@ -300,6 +358,13 @@ function __getIconsPaths (theme, iconName, size, context) {
 }
 
 module.exports.getIconBuffer = (iconName, size = 22, context = Context.STATUS, callback) => {
+  /**
+   * @desc Looks for an icon on the current theme
+   * @param string iconName - the icon name (without any extension)
+   * @param int size - the icon size
+   * @param Context context - the icon context (freedesktop standards)
+   * @param Promise callback - callback (Buffer)
+   */
   if (!isLinux()) {
     throw Error('getIconBuffer is only supported on linux.')
   }
@@ -312,6 +377,13 @@ module.exports.getIconBuffer = (iconName, size = 22, context = Context.STATUS, c
 }
 
 module.exports.getIcon = (iconName, size = 22, context = Context.STATUS, callback) => {
+  /**
+ * @desc Looks for an icon on the current theme
+ * @param string iconName - the icon name (without any extension)
+ * @param int size - the icon size
+ * @param Context context - the icon context (freedesktop standards)
+ * @param Promise callback - callback (iconPath)
+ */
   if (!isLinux()) {
     throw Error('getIcon is only supported on linux.')
   }
@@ -322,6 +394,13 @@ module.exports.getIcon = (iconName, size = 22, context = Context.STATUS, callbac
 }
 
 module.exports.getIconBuffer.sync = (iconName, size = 22, context = Context.STATUS) => {
+  /**
+ * @desc Looks for an icon on the current theme & return the icon buffer
+ * @param string iconName - the icon name (without any extension)
+ * @param int size - the icon size
+ * @param Context context - the icon context (freedesktop standards)
+ * @return Buffer
+ */
   if (!isLinux()) {
     throw Error('getIconBuffer.sync is only supported on linux.')
   }
@@ -330,9 +409,15 @@ module.exports.getIconBuffer.sync = (iconName, size = 22, context = Context.STAT
 }
 
 module.exports.getIcon.sync = (iconName, size = 22, context = Context.STATUS) => {
+  /**
+ * @desc Looks for an icon on the current theme & return the icon path
+ * @param string iconName - the icon name (without any extension)
+ * @param int size - the icon size
+ * @param Context context - the icon context (freedesktop standards)
+ * @return string - the icon path
+ */
   if (!isLinux()) {
     throw Error('getIcon.sync is only supported on linux.')
-
   }
 
   return getIconPathSync(iconName, size, context)
