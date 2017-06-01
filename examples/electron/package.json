@@ -12,8 +12,9 @@
     "Electron"
   ],
   "author": "Bilal Elmoussaoui",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
-    "electron": "^1.6.10"
+    "electron": "^1.6.10",
+    "linux-icons": "^1.0.0"
   }
 }

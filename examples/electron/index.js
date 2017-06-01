@@ -1,5 +1,5 @@
 const { app, Tray, Menu, BrowserWindow, nativeImage } = require('electron')
-const icons = require('../../index')
+const icons = require('linux-icons')
 
 let buffer = icons.getIconBuffer('google-chrome-tray', 22,
   [icons.Context.STATUS,
