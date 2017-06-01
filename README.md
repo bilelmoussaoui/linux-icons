@@ -28,7 +28,7 @@ In order to get the full path of an icon
 ```javascript
 const icons = require('linux-icons')
 
-let iconPath = icons.getIconSync('myicon-name', 22, icons.Context.STATUS)
+let iconPath = icons.getIcon.sync('myicon-name', 22, icons.Context.STATUS)
 ```
 
 Async
@@ -46,7 +46,7 @@ Or to get the buffer of it
 ```javascript
 const icons = require('linux-icons')
 
-let icon = icons.getIconBufferSync('myicon-name', 22, icons.Context.STATUS)
+let icon = icons.getIconBuffer.sync('myicon-name', 22, icons.Context.STATUS)
 ```
 
 Async

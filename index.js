@@ -8,8 +8,10 @@ const path = require('path')
 const fs = require('fs')
 const svg2png = require('svg2png')
 
-const HOME = os.homedir()
 
+// Home directory
+const HOME = os.homedir()
+// List of possible icons paths
 const ICONS_PATH = [
   '/usr/share/icons/',
   '/usr/local/share/icons/',
@@ -21,6 +23,7 @@ const ICONS_PATH = [
   path.join(HOME, '.pixmaps/')
 ]
 
+// Icons contexts freedestkop standards
 const ACTIONS_CONTEXT = 'actions'
 const ANIMATIONS_CONTEXT = 'animations'
 const APPLICATIONS_CONTEXT = 'applications'
@@ -34,16 +37,33 @@ const PANEL_CONTEXT = 'panel'
 const PLACES_CONTEXT = 'places'
 const STATUS_CONTEXT = 'status'
 
-// Async
-function getIconThemeName (callback) {
+
+
+const DESKTOP = {
+  "GNOME": {
+    "key": "icon-theme",
+    "path": "org.gnome.desktop.interface"
+  }
+}
+
+function getIconThemeCMD() {
+  let desktop = process.env.XDG_CURRENT_DESKTOP
+  let key, path
+  switch (desktop) {
+    case "GNOME":
+      key = "icon-theme"
+      path = "org.gnome.desktop.interface"
+  }
+  return `gsettings get ${path} ${key}`
+}
+
+
+function getIconThemeName(callback) {
   /*
     Return default icon theme name
     Read the gsettings and get the icon name uses by the user
   */
-
-  let key = 'icon-theme'
-  let path = 'org.gnome.desktop.interface'
-  exec('gsettings get ' + path + ' ' + key, (error, stdout, stderr) => {
+  exec(getIconThemeCMD(), (error, stdout) => {
     if (error !== null) {
       console.error(error)
     }
@@ -56,12 +76,8 @@ function getIconThemeNameSync () {
     Return default icon theme name
     Read the gsettings and get the icon name uses by the user
   */
-
-  let key = 'icon-theme'
-  let path = 'org.gnome.desktop.interface'
   try {
-    let theme = execSync('gsettings get ' + path + ' ' + key).toString()
-    return theme.trim().replace(/'/g, '')
+    return execSync(getIconThemeCMD()).toString().trim().replace(/'/g, '')
   } catch (err) {
     console.log(err.args)
     return null
@@ -74,8 +90,7 @@ function parseTheme (themePath, callback) {
     Read the index.theme and return it's content
     index.theme file is a simple ini file
   */
-  let index = path.join(themePath, 'index.theme')
-  readINI(index, (error, data) => {
+  readINI(path.join(themePath, 'index.theme'), (error, data) => {
     if (error !== null) {
       if (error.code === 'ENOENT') {
         return
@@ -142,8 +157,7 @@ function getThemeSync (themeName) {
 function getIconFromTheme (theme, iconName, size, context, callback) {
   let icons = __getIconsPaths(theme, iconName, size, context)
   for (let key in icons) {
-    let iconPath = icons[key]
-    fs.realpath(iconPath, (error, resolvedPath) => {
+    fs.realpath(icons[key], (error, resolvedPath) => {
       if (error !== null) {
         if (error.code === 'ENOENT') {
           return
@@ -317,11 +331,11 @@ module.exports.getIcon = (iconName, size = 22, context = STATUS_CONTEXT, callbac
   })
 }
 
-module.exports.getIconBufferSync = (iconName, size = 22, context = STATUS_CONTEXT) => {
+module.exports.getIconBuffer.sync= (iconName, size = 22, context = STATUS_CONTEXT) => {
   return getImageBufferSync(getIconPathSync(iconName, size, context))
 }
 
-module.exports.getIconSync = (iconName, size = 22, context = STATUS_CONTEXT) => {
+module.exports.getIcon.sync = (iconName, size = 22, context = STATUS_CONTEXT) => {
   return getIconPathSync(iconName, size, context)
 }
 
