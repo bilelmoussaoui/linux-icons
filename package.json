@@ -13,7 +13,7 @@
     "native"
   ],
   "author": "Bilal Elmoussaoui",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "ini": "^1.3.4",
     "svg2png": "^4.1.1"
