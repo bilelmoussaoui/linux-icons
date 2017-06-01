@@ -1,0 +1,19 @@
+{
+  "name": "linux-icons-electron-example",
+  "version": "1.0.0",
+  "description": "Linux Icons Electron Example",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Linux",
+    "Icons",
+    "Electron"
+  ],
+  "author": "Bilal Elmoussaoui",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^1.6.10"
+  }
+}
