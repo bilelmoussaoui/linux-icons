@@ -19,6 +19,6 @@
     "utils-fs-read-ini": "^1.0.0"
   },
   "devDependencies": {
-    "standard": "^10.0.2"
+    "standard": "^10.0.3"
   }
 }
