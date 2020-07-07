@@ -14,7 +14,7 @@
   "author": "Bilal Elmoussaoui",
   "license": "MIT",
   "dependencies": {
-    "electron": "^1.6.10",
+    "electron": "^7.2.4",
     "linux-icons": "^1.1.1"
   }
 }
