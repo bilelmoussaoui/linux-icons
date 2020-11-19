@@ -55,7 +55,8 @@ function getIconThemeCMD () {
    */
   let desktop = process.env.XDG_CURRENT_DESKTOP
   let key, path
-  switch (desktop) {
+  switch (desktop.toUpperCase()) {
+    case 'UNITY':
     case 'GNOME':
       key = 'icon-theme'
       path = 'org.gnome.desktop.interface'
